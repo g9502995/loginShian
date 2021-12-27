@@ -8,5 +8,13 @@ commands:
       - "lg"
       - "l"
       - "L"
-    description: :"登陸或註冊"
+    description: "登陸或註冊"
     usage: "/login [password]"
+
+  register:
+      aliaser:
+        - "rg"
+        - "r"
+        - "R"
+      description: "更改密碼"
+      usage: "/register [old password] [new password]"

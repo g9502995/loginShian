@@ -20,6 +20,14 @@ public class ConfigReader {
 
     }
 
+    public static void changePassword(String playerName, String password) {
+        String A = MD5.uncode(password);
+        Main.instance.getConfig().set(playerName.toLowerCase() + "玩家.PASSWORD",A);
+        Main.instance.saveConfig();
+
+
+    }
+
     public static void addPlayer(String playerName, String password,String UUID){
        String A = MD5.uncode(password);
        Main.instance.getConfig().set(playerName.toLowerCase() + "玩家.玩家名",playerName.toLowerCase());

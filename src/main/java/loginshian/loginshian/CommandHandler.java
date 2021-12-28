@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.security.NoSuchAlgorithmException;
 
-public class CommandHandler implements CommandExecutor{
+public class CommandHandler implements CommandExecutor {
 
     @Override
     @ParametersAreNonnullByDefault
@@ -19,76 +19,30 @@ public class CommandHandler implements CommandExecutor{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equals("login")) {
 
-        if (!(sender instanceof Player)) {
-            // 如果 sender 是 Player 的实例，那么这条命令是玩家发送的，反之则不是
-            return false;
-            // 服主也有可能从服务器控制台使用命令，先确认命令来自于玩家
-        }
-        if (!LoginData.hasPlayerName(sender.getName())) {
-            sender.sendMessage(ChatColor.GREEN + "你已經登入了");
-            return true;
-            // 已经登录了，就没必要验证了
-        }
-        if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "必須輸入密碼");
-            // sendMessage 用于向该终端（玩家或控制台）发送消息
-            return false;
-            // 参数不完整，拒绝处理
-        }
-        String pwdConcat = String.join("<space>", args);
-        // 玩家的密码可能含有空格，join 将它们粘在一起，<space> 只是定义的分隔符，换成别的也行
-        if (ConfigReader.isPlayerRegistered(sender.getName())) {
-            // 已经注册
-            if (ConfigReader.verifyPassword(sender.getName(), pwdConcat)) {
-                // 验证密码
-                LoginData.removePlayerName(sender.getName());
-                // 解锁玩家
-                Bukkit.getPlayer(sender.getName()).setGameMode(GameMode.SURVIVAL);
-                sender.sendMessage(ChatColor.GREEN + "登錄成功 歡迎光臨!");
-
-            } else {
-                sender.sendMessage(ChatColor.RED + "密碼錯誤！");
-            }
-            return true;
-            // true 代表语法正确，虽然密码错误，但语法正确即可返回 true
-
-        } else {
-            // 玩家没注册，准备注册
-            ConfigReader.addPlayer(sender.getName(), pwdConcat,((Player) sender).getUniqueId().toString());
-            // 注册玩家
-            LoginData.removePlayerName(sender.getName());
-            // 解锁玩家
-            Bukkit.getPlayer(sender.getName()).setGameMode(GameMode.SURVIVAL);
-            sender.sendMessage(ChatColor.GREEN + "註冊成功！");
-            return true;
-        }
-        }else if(command.getName().equals("register")) {
-
             if (!(sender instanceof Player)) {
-                // 如果 sender 是 Player 的实例，那么这条命令是玩家发送的，反之则不是
+                // 如果是玩家發的命令的話
                 return false;
-                // 服主也有可能从服务器控制台使用命令，先确认命令来自于玩家
+
             }
-            if (LoginData.hasPlayerName(sender.getName())) {
-                sender.sendMessage(ChatColor.GREEN + "你還沒登入");
+            if (!LoginData.hasPlayerName(sender.getName())) {
+                sender.sendMessage(ChatColor.GREEN + "你已經登入了");
                 return true;
-                // 已经登录了，就没必要验证了
+                // 已經登入
             }
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.RED + "必須輸入密碼");
-                // sendMessage 用于向该终端（玩家或控制台）发送消息
+
                 return false;
-                // 参数不完整，拒绝处理
+
             }
             String pwdConcat = String.join("<space>", args);
-            System.out.println(args);
-            // 玩家的密码可能含有空格，join 将它们粘在一起，<space> 只是定义的分隔符，换成别的也行
+
             if (ConfigReader.isPlayerRegistered(sender.getName())) {
-                // 已经注册
+                // 如果已經註冊
                 if (ConfigReader.verifyPassword(sender.getName(), pwdConcat)) {
-                    // 验证密码
+                    // 驗證密碼
                     LoginData.removePlayerName(sender.getName());
-                    // 解锁玩家
+                    // 解鎖玩家
                     Bukkit.getPlayer(sender.getName()).setGameMode(GameMode.SURVIVAL);
                     sender.sendMessage(ChatColor.GREEN + "登錄成功 歡迎光臨!");
 
@@ -96,22 +50,22 @@ public class CommandHandler implements CommandExecutor{
                     sender.sendMessage(ChatColor.RED + "密碼錯誤！");
                 }
                 return true;
-                // true 代表语法正确，虽然密码错误，但语法正确即可返回 true
+
 
             } else {
-                // 玩家没注册，准备注册
+                // 玩家没註冊
                 ConfigReader.addPlayer(sender.getName(), pwdConcat, ((Player) sender).getUniqueId().toString());
-                // 注册玩家
+                // 註冊玩家
                 LoginData.removePlayerName(sender.getName());
-                // 解锁玩家
+                // 解鎖玩家
                 Bukkit.getPlayer(sender.getName()).setGameMode(GameMode.SURVIVAL);
                 sender.sendMessage(ChatColor.GREEN + "註冊成功！");
                 return true;
             }
+
         }
-return false;
+
+
+        return false;
     }
-
-
-
 }

@@ -19,12 +19,15 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        System.out.println("ShianLogin Plugin v0.0.1");
+        // 註冊事件
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
 
-        // 注册事件处理器，这里必须实例化，this 表明注册到本插件上
+        // 註冊事件處理
         Objects.requireNonNull(Bukkit.getPluginCommand("login")).setExecutor(new CommandHandler());
         Objects.requireNonNull(Bukkit.getPluginCommand("register")).setExecutor(new CommandHandlers());
-        // 注册事件处理器，也要实例化，requireNonNull 是不必要的，但是万一插件损坏了或者 Bukkit 出错了，我们还能知道是这里出问题
+
         instance = this;
         setPlugin(this);
     }
